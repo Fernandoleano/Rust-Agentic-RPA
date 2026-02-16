@@ -1,0 +1,4 @@
+﻿target/
+/browser_data/
+*.log
+.env
