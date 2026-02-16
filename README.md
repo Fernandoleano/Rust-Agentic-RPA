@@ -43,19 +43,19 @@ The agent follows an "Observe-Think-Act" cycle:
 
 The project is architected as a set of autonomous but interconnected modules:
 
-### 🧠 Brain (`src/bin/agent/brain.rs`)
+### Brain (src/bin/agent/brain.rs)
 
-The cognitive center. It builds a prompt for the LLM that includes the user's ultimate goal and the history of observations. It interprets the LLM's raw text response into structured `Step` commands.
+The cognitive center. It builds a prompt for the LLM that includes the user's ultimate goal and the history of observations. It interprets the LLM's raw text response into structured Step commands.
 
-### 👐 Hands (`src/bin/agent/hands.rs`)
+### Hands (src/bin/agent/hands.rs)
 
-The physical interface. It handles the `headless_chrome::Browser` and `Tab` instances. It translates high-level commands like `TypeInto` or `Click` into DevTools Protocol requests.
+The physical interface. It handles the headless_chrome::Browser and Tab instances. It translates high-level commands like TypeInto or Click into DevTools Protocol requests.
 
-### 👁️ Face (`src/bin/agent/face.rs`)
+### Face (src/bin/agent/face.rs)
 
-The communication layer. It uses Axum to host a server that broadcasts `AgentEvent` updates. This allows for real-time monitoring of the agent's circular reasoning and activities.
+The communication layer. It uses Axum to host a server that broadcasts AgentEvent updates. This allows for real-time monitoring of the agent's circular reasoning and activities.
 
-### 🌳 DOM (`src/bin/agent/dom.rs`)
+### DOM (src/bin/agent/dom.rs)
 
 The sensory module. It contains utilities to capture the current DOM state, calculate viewport positions, and extract text/content from specific selectors.
 
