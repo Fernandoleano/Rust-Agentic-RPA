@@ -1,23 +1,23 @@
-# Rust Agentic RPA 🤖🌐
+# Rust Agentic RPA
 
 A powerful, modular AI Browser Agent built with Rust. This project enables an LLM to "see" the web, "think" about the next steps, and "interact" with elements to automate complex browser-based tasks.
 
-## 🚀 Overview
+## Overview
 
 `rust-agentic-rpa` is a state-of-the-art Robotic Process Automation (RPA) tool that leverages Large Language Models (LLMs) to navigate the web autonomously. Unlike traditional RPA which relies on static selectors, this agent understands the DOM and can adapt to UI changes dynamically.
 
-## 🛠 Features
+## Features
 
-- **🧠 Intelligent Brain**: Driven by OpenAI (via `anyhow` and `tokio`), the agent processes DOM snapshots to decide the best course of action.
-- **👐 Hardware Interaction (Hands)**: Utilizes `headless_chrome` to perform human-like actions:
+- **Intelligent Brain**: Driven by OpenAI (via `anyhow` and `tokio`), the agent processes DOM snapshots to decide the best course of action.
+- **Hardware Interaction (Hands)**: Utilizes `headless_chrome` to perform human-like actions:
   - Navigation & Tab management.
   - Typing, Clicking, and Key Pressing.
   - Data Extraction.
-- **👁️ Real-time Face**: A built-in web server (Axum) provides a communication layer and dashboard to monitor the agent's progress and events.
-- **⚡ High Performance**: Built on the `tokio` asynchronous runtime for efficient browser control and event handling.
-- **🛡️ Secure Profiling**: Automatically manages Chrome "Shadow Profiles" to maintain persistent sessions safely.
+- **Real-time Face**: A built-in web server (Axum) provides a communication layer and dashboard to monitor the agent's progress and events.
+- **High Performance**: Built on the `tokio` asynchronous runtime for efficient browser control and event handling.
+- **Secure Profiling**: Automatically manages Chrome "Shadow Profiles" to maintain persistent sessions safely.
 
-## 🏗 Architecture
+## Architecture
 
 The project is divided into logical modules representing the agent's anatomy:
 
@@ -28,7 +28,7 @@ The project is divided into logical modules representing the agent's anatomy:
 | `Face`  | The communication layer (Web Server/Events) that interacts with the user. |
 | `DOM`   | Essential utilities for capturing snapshots and extracting page data.     |
 
-## 🛠 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -57,7 +57,7 @@ The project is divided into logical modules representing the agent's anatomy:
    cargo build
    ```
 
-## 🏃 Running the Agent
+## Running the Agent
 
 Start the main orchestrator:
 
@@ -71,7 +71,7 @@ Once started, the agent will:
 2. Start a persistent Chrome session.
 3. Wait for your commands via the web interface.
 
-## 📁 Project Structure
+## Project Structure
 
 ```text
 src/
@@ -84,6 +84,6 @@ src/
         └── dom.rs    # Snapshot Utilities
 ```
 
-## ⚖️ License
+## License
 
 MIT License. See [LICENSE](LICENSE) for details.
