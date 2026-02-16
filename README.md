@@ -6,27 +6,58 @@ A powerful, modular AI Browser Agent built with Rust. This project enables an LL
 
 `rust-agentic-rpa` is a state-of-the-art Robotic Process Automation (RPA) tool that leverages Large Language Models (LLMs) to navigate the web autonomously. Unlike traditional RPA which relies on static selectors, this agent understands the DOM and can adapt to UI changes dynamically.
 
+### How it Works
+
+The agent follows an "Observe-Think-Act" cycle:
+
+1. **Observe**: The agent captures a snapshot of the current web page, including the URL, page title, and a filtered DOM tree (to keep the context window efficient).
+2. **Think**: The captured state is sent to the LLM (the Brain). The Brain analyzes the visual and structural data against the user's goal to decide the next logical step.
+3. **Act**: The decided action (e.g., clicking a button, typing text, or navigating to a new URL) is executed by the browser controller (the Hands).
+
 ## Features
 
-- **Intelligent Brain**: Driven by OpenAI (via `anyhow` and `tokio`), the agent processes DOM snapshots to decide the best course of action.
-- **Hardware Interaction (Hands)**: Utilizes `headless_chrome` to perform human-like actions:
-  - Navigation & Tab management.
-  - Typing, Clicking, and Key Pressing.
-  - Data Extraction.
-- **Real-time Face**: A built-in web server (Axum) provides a communication layer and dashboard to monitor the agent's progress and events.
-- **High Performance**: Built on the `tokio` asynchronous runtime for efficient browser control and event handling.
-- **Secure Profiling**: Automatically manages Chrome "Shadow Profiles" to maintain persistent sessions safely.
+### Intelligent Decision Making (The Brain)
 
-## Architecture
+- **Context-Aware**: Processes DOM structure to locate interactive elements without hardcoded IDs or XPaths.
+- **Error Recovery**: If an action fails or the page doesn't load as expected, the Brain can observe the error and attempt an alternative path.
+- **Goal Completion**: Recognizes when a task is finished and provides a summary of the actions taken.
 
-The project is divided into logical modules representing the agent's anatomy:
+### Browser Orchestration (The Hands)
 
-| Module  | Description                                                               |
-| :------ | :------------------------------------------------------------------------ |
-| `Brain` | The LLM interface that handles decision-making and observation analysis.  |
-| `Hands` | The browser control layer (based on `headless_chrome`).                   |
-| `Face`  | The communication layer (Web Server/Events) that interacts with the user. |
-| `DOM`   | Essential utilities for capturing snapshots and extracting page data.     |
+- **Headless Chrome Management**: Leverages `headless_chrome` for low-level control over browser sessions.
+- **Human-like Interactions**: Simulates realistic mouse movements, clicks, and keystrokes.
+- **Multi-Tab Support**: Can manage multiple tabs simultaneously for complex workflows.
+- **Smart Waiting**: Automatically waits for elements to appear or for the page to reach a "body-ready" state before proceeding.
+
+### Communication Interface (The Face)
+
+- **Event Streaming**: Provides a broadcast system to stream real-time events (thinking, steps, errors) to external consumers.
+- **Web Dashboard**: An internal Axum-based server that acts as a bridge between the agent core and the user interface.
+
+### Security and Persistence
+
+- **Secure Profiles**: Uses isolated "Shadow Profiles" for Chrome to maintain cookies and sessions without interfering with your main browser.
+- **Environment Safety**: Sensitive configurations like API keys are managed via `.env` files and are automatically ignored by Git.
+
+## Architecture Deep Dive
+
+The project is architected as a set of autonomous but interconnected modules:
+
+### 🧠 Brain (`src/bin/agent/brain.rs`)
+
+The cognitive center. It builds a prompt for the LLM that includes the user's ultimate goal and the history of observations. It interprets the LLM's raw text response into structured `Step` commands.
+
+### 👐 Hands (`src/bin/agent/hands.rs`)
+
+The physical interface. It handles the `headless_chrome::Browser` and `Tab` instances. It translates high-level commands like `TypeInto` or `Click` into DevTools Protocol requests.
+
+### 👁️ Face (`src/bin/agent/face.rs`)
+
+The communication layer. It uses Axum to host a server that broadcasts `AgentEvent` updates. This allows for real-time monitoring of the agent's circular reasoning and activities.
+
+### 🌳 DOM (`src/bin/agent/dom.rs`)
+
+The sensory module. It contains utilities to capture the current DOM state, calculate viewport positions, and extract text/content from specific selectors.
 
 ## Getting Started
 
@@ -67,9 +98,9 @@ cargo run --bin agent
 
 Once started, the agent will:
 
-1. Launch its Web UI (Face).
-2. Start a persistent Chrome session.
-3. Wait for your commands via the web interface.
+1. Launch the communication server (Face).
+2. Start an isolated Chrome session.
+3. Wait for commands. You can interact with the agent through the system-generated UI or by sending commands to the broadcast bridge.
 
 ## Project Structure
 
@@ -77,12 +108,19 @@ Once started, the agent will:
 src/
 └── bin/
     └── agent/
-        ├── main.rs   # Entry point & Orchestration
-        ├── brain.rs  # LLM Decision Logic
-        ├── hands.rs  # Browser Control (Chrome)
-        ├── face.rs   # Web Server & UI Communication
-        └── dom.rs    # Snapshot Utilities
+        ├── main.rs   # Entry point: Orchestrates Brain, Hands, and Face.
+        ├── brain.rs  # Cognitive Module: Decision making and intent parsing.
+        ├── hands.rs  # Physical Module: Browser session and tab control.
+        ├── face.rs   # Interface Module: Web server and event broadcasting.
+        ├── dom.rs    # Sensory Module: DOM traversal and snapshot capture.
+        └── types.rs  # Shared Types: Definitions for Steps, Events, and State.
 ```
+
+## Technical Details
+
+- **Runtime**: Powered by `tokio` (multi-threaded).
+- **Error Handling**: Uses `anyhow` for robust and descriptive error propagation.
+- **Serialization**: `serde` and `serde_json` for efficient data exchange between the Brain and the Browser.
 
 ## License
 
