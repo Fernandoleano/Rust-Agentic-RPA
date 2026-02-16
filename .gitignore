@@ -2,3 +2,4 @@
 /browser_data/
 *.log
 .env
+agent_profile/
