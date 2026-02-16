@@ -122,6 +122,23 @@ src/
 - **Error Handling**: Uses `anyhow` for robust and descriptive error propagation.
 - **Serialization**: `serde` and `serde_json` for efficient data exchange between the Brain and the Browser.
 
+## Future Updates
+
+### System-Wide Automation (Full PC Control)
+
+The agent is currently optimized for web-based RPA. Future releases will expand its capabilities to include full system automation. This will allow the agent to:
+
+- Open and interact with desktop applications (Excel, Slack, Terminal, etc.).
+- Manage file systems and perform cross-application workflows.
+- Take complete control of the OS to perform complex housekeeping or administrative tasks based on natural language commands.
+
+### Prompt-Based Web Scraping
+
+We are working on a revolutionary scraping engine that will allow users to extract data from any website without specifying selectors or parsing logic.
+
+- **Natural Language Extraction**: Simply say "Extract all the product names and prices from this page," and the agent will handle the rest.
+- **Dynamic Adaptability**: The agent will automatically adjust to pagination, infinite scrolls, and complex UI structures to ensure high-quality data retrieval with zero manual configuration.
+
 ## License
 
 MIT License. See [LICENSE](LICENSE) for details.
